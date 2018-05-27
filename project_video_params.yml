@@ -1,0 +1,25 @@
+feature_params:
+  cell_per_block: 2
+  color_space: YCrCb
+  hist_bins: 32
+  hist_feat: false
+  hog_channel: ALL
+  hog_feat: true
+  orient: 9
+  pix_per_cell: 8
+  spatial_feat: true
+  spatial_size: !!python/tuple
+  - 32
+  - 32
+tracker_params:
+  cells_per_step: 2
+  regions:
+  - - - null
+      - null
+    - - 400
+      - 656
+  scales:
+  - 1.5
+  smooth_factor: 8
+  threshold: 2
+  key_frame_interval: 2
