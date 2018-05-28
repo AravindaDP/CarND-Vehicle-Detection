@@ -1,0 +1,22 @@
+dst:
+- [412.0, 720.0]
+- [412.0, 0.0]
+- [888.0, 0.0]
+- [888.0, 720.0]
+src:
+- [252.0, 698.0]
+- [573.0, 465.0]
+- [712.0, 465.0]
+- [1064.0, 698.0]
+thresholds:
+  b_thresh: !!python/tuple [170, 255]
+  dir_thresh: !!python/tuple [0.3141592653589793, 1.2566370614359172]
+  grad_thresh: !!python/tuple [10, 255]
+  l_thresh: !!python/tuple [210, 255]
+tracker_params:
+  margin: 20
+  window_height: 80
+  window_width: 40
+  xm_per_pix: 0.0077731092436975
+  ym_per_pix: 0.034722222222222224
+  smooth_factor: 5
