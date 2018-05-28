@@ -39,7 +39,7 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and color spaces and finally settled for following parameters.
+I tried various combinations of parameters and color spaces and finally settled for following parameters.  
 HOG parameters
 - `orientations=9`
 - `pixels_per_cell=(8, 8)`
@@ -49,7 +49,7 @@ HOG parameters
 Spatial features
 - `spatial_size=(32, 32)`
 
-I did not used color histogram features at the end since it only adds a slight increase in accuracy at the expense of some computation cost in feature calculations. In contrast HOG+spatial features were enough to achieve decent accuracy (~99%)
+I did not used color histogram features at the end since it only adds a slight increase in accuracy at the expense of some computation cost in feature calculations. In contrast HOG + spatial features were enough to achieve decent accuracy (~99%)
 
 ### Log:
 
@@ -66,13 +66,13 @@ YCrCb, ALL channels Using: 9 orientations 8 pixels per cell and 2 cells per bloc
 4000 samples  
 LinearSVC with default parameters.  
 Validation accuracy: 0.9812
-- HOG+spatial features  
+- HOG + spatial features  
 Color (histogram) features omitted  
 Parameter tuning using GridSearchCV (best_params_:C=1.0)  
 Model trained and saved using split from entire data set. (Accuracy =  0.9904)  
 --
 - DecisionTreeClassifier  
-HOG+spatial+color histogram features  
+HOG + spatial + color histogram features  
 Parameter tuning using GridSearchCV ('min_samples_split': 5, 'criterion': 'entropy')  
 4000 samples  
 Validation accuracy: 0.9275
@@ -96,10 +96,10 @@ I decided to search evenly distributed window positions at selected scales over 
 ![alt text][image3]
 
 Here are the selected regions:
-- `x_start_stop=[None,None] #entire width of the image`
+- `x_start_stop=[None, None] #entire width of the image`
 - `y_start_stop=[400,656]`
-- `scale=1.5 #(96,96) window size` 
-- `cells_per_step=2 #Overlap=(0.75,0.75)`
+- `scale=1.5 # (96,96) window size` 
+- `cells_per_step=2 #Overlap = (0.75,0.75)`
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
@@ -118,13 +118,15 @@ Here's a [link to my video result](./project_video_output.mp4)
 
 I have also combined the vehicle detection pipeline with the lane finding implementation from the last project. Here's a [link to my video result with lane tracking](./project_video_combined_output.mp4)
 
+Furthermore, I have implemented this on my own video I've recorded myself. Here's a [link to my own video result](./fc2_save_2018-04-17-111311_combined_output.mp4)
+
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I recorded the positions of positive detections in each frame of the video.  From the positive detections of recent frames, I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
+I recorded the positions of positive detections in each frame of the video.  From the positive detections of recent frames, I created a heatmap and then applied threshold to that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
 The code for this step is contained in the `find_vehicles(self, img)` method in twelfth code cell of the IPython notebook (or in lines 88 through 96 of the file called `vehicle_tracker.py`).
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` from integrated and thresholded heatmap and the bounding boxes then overlaid on the last frame of video:
+Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` from integrated and threshold applied heatmap and the bounding boxes then overlaid on the last frame of video:
 
 ### Here are six frames and their corresponding heatmaps:
 
@@ -142,9 +144,9 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I have used HOG and spatial features from all three channels of YCrCb color space. YCrCb color space seems to discern vehicles vs non-vehicles better compared to other color spaces. I also used LinearSVC for the speed and accuracy performace. (While an rbf kernal would provide better accuracy it comes with a cost of speed of processing. It's also hard to train against large dataset of over 10000 samples as it's fit time complexity is more than quadratic)
+Here I have used HOG and spatial features from all three channels of YCrCb color space. YCrCb color space seems to discern vehicles vs non-vehicles better compared to other color spaces. I also used LinearSVC for the speed and accuracy performance. (While a rbf kernel would provide better accuracy, it comes with a cost of speed of processing. It's also hard to train against large dataset of over 10000 samples as it's fit time complexity is more than quadratic)
 
-It is observed that while parameters and training set used works fairly well for the unmodified project video accuracy of the pipeline is greately reduced for different videos. It's interesting that even a simple operation like distortion correction itself resulted in large number of false positives and required higher thresholding level. To overcome these situation it may require more hard negative mining (Training classifier using more false positives)
+It is observed that while parameters and training set used works fairly well for the unmodified project video, accuracy of the pipeline is greatly reduced for different videos. It's interesting that even a simple operation like distortion correction itself resulted in large number of false positives and required higher thresholding level for project video. To overcome these situation it may require more hard negative mining (Training classifier using more false positives)
 
-It's also required careful tuning of the pipeline where it requires a very delicate balance between accuracy versus speed. It would be interesting to explore deep learning approaches and compare the accuracy vs speed against the computer vision based detection algorithms. 
+It's also required careful tuning of the pipeline where it requires a very delicate balance between accuracy versus speed. It would be interesting to explore deep learning approaches and compare the accuracy vs speed against the computer vision-based detection algorithms. 
 
